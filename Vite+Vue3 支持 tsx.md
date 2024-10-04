@@ -12,7 +12,7 @@ yarn add @vitejs/plugin-vue-jsx -d or npm i @vitejs/plugin-vue-jsx -d
 
 以下配置仅为了展示jsx配置展示，详细配置可查看 vite 详细配置 或 vite 官网
 
-- jsx直接引入css文件少了sfc的scope会变成全局全局引入，vite使用了postcss-modules 可以开启模块化样式来避免样式冲突。样式命名需要加.modele，如果不想添加可参考 大佬博客。
+- jsx直接引入css文件少了sfc的scope会变成全局全局引入，vite使用了postcss-modules 可以开启模块化样式来避免样式冲突。样式命名需要加.modele，如果不想添加可参考 [大佬博客](https://blog.csdn.net/zshsats/article/details/127025583)。
 - jsx的dom中变量需要以单层大括号包裹。
 - 多层dom可以使用空标签包裹<></>。
 

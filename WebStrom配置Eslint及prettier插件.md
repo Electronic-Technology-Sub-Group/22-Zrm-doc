@@ -9,3 +9,5 @@ WebStrom 中配置 Eslint、prettier 插件是针对与某一个项目进行配�
 ![image](https://github.com/user-attachments/assets/62797584-ae54-470c-ab73-93198ea368fe)
 
 eslint 如果采用自动配置, 有可能会出现插件搜不出esLint的情况, 因此也可以像如上的手动配置
+
+prettier 同理

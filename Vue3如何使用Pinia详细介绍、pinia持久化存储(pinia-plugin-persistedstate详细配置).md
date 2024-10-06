@@ -177,3 +177,161 @@ export default {
 };
 </script>
 ```
+
+## 第三个核心概念Action
+
+Actions 用于处理异步操作或封装复杂的业务逻辑。
+
+定义action
+
+```js
+export const useCounterStore = defineStore('counter', {
+  state: () => ({
+    count: 0
+  }),
+  actions: {
+    increment() {
+      this.count++;
+    },
+    async incrementAsync() {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      this.increment();
+    }
+  }
+});
+```
+
+使用action
+
+```html
+<template>
+  <div>
+    <p>Count: {{ count }}</p>
+    <button @click="increment">Increment</button>
+    <button @click="incrementAsync">Increment Async</button>
+  </div>
+</template>
+<script>
+import { useCounterStore } from '../stores/counter';
+export default {
+  setup() {
+    const counter = useCounterStore();
+    return {
+      count: counter.count,
+      increment: counter.increment,
+      incrementAsync: counter.incrementAsync
+    };
+  }
+};
+</script>
+```
+
+## Pinia持久化存储
+
+> 为了在页面刷新后保留状态，我们可以使用 pinia-plugin-persistedstate 插件来实现状态持久化存储
+
+### 安装持久化插件pinia-plugin-persistedstate
+
+1. 安装依赖
+
+```bash
+npm install pinia-plugin-persistedstate
+```
+
+2. 将插件添加到 pinia 实例上
+
+在 main.js 中添加插件配置。
+
+```js
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import App from './App.vue';
+const app = createApp(App);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+app.use(pinia);
+app.mount('#app');
+```
+
+### 用法
+
+### 基本使用
+
+在 store 中启用状态持久化。
+
+```js
+import { defineStore } from 'pinia';
+export const useCounterStore = defineStore('counter', {
+  state: () => ({
+    count: 0
+  }),
+  actions: {
+    increment() {
+      this.count++;
+    }
+  },
+  persist: true
+});
+```
+
+### 高级使用
+
+可以自定义持久化的配置，如存储的 key 和使用的存储方式。
+
+```js
+import { defineStore } from 'pinia';
+export const useCounterStore = defineStore('counter', {
+  state: () => ({
+    count: 0
+  }),
+  actions: {
+    increment() {
+      this.count++;
+    }
+  },
+  persist: {
+    key: 'my-counter',
+    storage: localStorage,
+    paths: ['count']
+  }
+});
+```
+
+### 高级配置示例
+
+更复杂的配置示例：
+
+```js
+import { defineStore } from 'pinia';
+
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    name: '',
+    age: 0,
+    email: '',
+    preferences: {
+      theme: 'light',
+      notifications: true
+    }
+  }),
+  actions: {
+    setUser(name, age, email) {
+      this.name = name;
+      this.age = age;
+      this.email = email;
+    },
+    toggleNotifications() {
+      this.preferences.notifications = !this.preferences.notifications;
+    },
+    setTheme(theme) {
+      this.preferences.theme = theme;
+    }
+  },
+  persist: {
+    key: 'my-user-store',
+    storage: localStorage, // 使用 localStorage 进行持久化
+    paths: ['name', 'age', 'email', 'preferences.theme'] // 选择持久化的状态字段
+  }
+});
+```

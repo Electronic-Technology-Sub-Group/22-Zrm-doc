@@ -135,3 +135,45 @@ counter.$state = {
 const counter = useCounterStore();
 counter.$reset();
 ```
+
+## 第二个核心概念Getters
+
+Getters 类似于 Vue 的计算属性，用于计算派生状态。
+
+定义getters
+
+```js
+export const useCounterStore = defineStore('counter', {
+  state: () => ({
+    count: 0
+  }),
+  getters: {
+    doubleCount(state) {
+      return state.count * 2;
+    }
+  }
+});
+```
+
+页面中使用getters
+
+```html
+<template>
+  <div>
+    <p>Double Count: {{ doubleCount }}</p>
+    <button @click="increment">Increment</button>
+  </div>
+</template>
+<script>
+import { useCounterStore } from '../stores/counter';
+export default {
+  setup() {
+    const counter = useCounterStore();
+    return {
+      doubleCount: counter.doubleCount,
+      increment: counter.increment
+    };
+  }
+};
+</script>
+```
